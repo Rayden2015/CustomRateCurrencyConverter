@@ -1,29 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { CurrencyConverterService } from '../services/currencyconverter.service';
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AngularFireDatabase } from '@angular/fire/compat/database'
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
-    convertedValue: number = 0;
-  constructor(private currencyConverter: CurrencyConverterService) {}
+export class HomePage {
 
-  ngOnInit() {}
+  baseCurrency: string = 'USD';
+  targetCurrency: string = 'EUR';
+  baseAmount!: number;
+  convertedAmount!: number;
+  conversionRates: any;
+  conversionHistory: Observable<any[]>;
 
-  setRates(form: any) {
-    // Set the current, selling rate, and buying rate in the conversion service
-    this.currencyConverter.current = form.value.current;
-    this.currencyConverter.sellingRate = form.value.sellingRate;
-    this.currencyConverter.buyingRate = form.value.buyingRate;
-
-
-    this.currencyConverter.setRates(form.value.current, form.value.sellingRate, form.value.buyingRate);
+  constructor(private http: HttpClient, private db: AngularFireDatabase) {
+    this.conversionHistory = db.list('conversions').valueChanges();
   }
 
-  convertCurrency(form: any) {
-    // Call the convert method in the conversion service and set the converted value
-    this.convertedValue = this.currencyConverter.convert(form.value.amount);
+  convertCurrency() {
+    const apiUrl = `https://api.exchangeratesapi.io/latest?base=${this.baseCurrency}`;
+    this.http.get(apiUrl).subscribe((data: any) => {
+      this.conversionRates = data.rates;
+      this.convertedAmount = this.baseAmount * this.conversionRates[this.targetCurrency];
+
+      // Save conversion to Firebase
+      this.db.list('conversions').push({
+        base: this.baseCurrency,
+        target: this.targetCurrency,
+        baseAmount: this.baseAmount,
+        convertedAmount: this.convertedAmount,
+        timestamp: Date.now()
+      });
+    });
   }
+
 }

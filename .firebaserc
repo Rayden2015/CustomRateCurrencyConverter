@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "freedom-b57a1": {
+      "hosting": {
+        "app": [
+          "currencycoverter"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "freedom-b57a1"
+  }
+}

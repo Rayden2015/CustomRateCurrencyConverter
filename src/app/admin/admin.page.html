@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Admin Panel
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form (ngSubmit)="saveExchangeRates()">
+    <ion-item>
+      <ion-label>Base Currency</ion-label>
+      <ion-select [(ngModel)]="baseCurrency" name="baseCurrency">
+        <ion-select-option value="USD">USD</ion-select-option>
+        <ion-select-option value="EUR">EUR</ion-select-option>
+        <ion-select-option value="JPY">JPY</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Exchange Rate (EUR)</ion-label>
+      <ion-input type="number" [(ngModel)]="exchangeRates.EUR" name="EUR"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Exchange Rate (JPY)</ion-label>
+      <ion-input type="number" [(ngModel)]="exchangeRates.JPY" name="JPY"></ion-input>
+    </ion-item>
+    <ion-button type="submit" expand="full">Save</ion-button>
+  </form>
+</ion-content>
