@@ -1,0 +1,42 @@
+
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Currency Converter</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Form for admins to input current, selling rate, and buying rate -->
+  <form #adminForm="ngForm" (ngSubmit)="setRates(adminForm)">
+    <ion-item>
+      <ion-label position="floating">Current</ion-label>
+      <ion-input type="number" name="current" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Selling Rate</ion-label>
+      <ion-input type="number" name="sellingRate" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Buying Rate</ion-label>
+      <ion-input type="number" name="buyingRate" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-button type="submit" expand="full">Set Rates</ion-button>
+  </form>
+
+  <!-- Form for users to enter a specific amount for a currency -->
+  <form #convertForm="ngForm" (ngSubmit)="convertCurrency(convertForm)">
+    <ion-item>
+      <ion-label position="floating">Amount</ion-label>
+      <ion-input type="number" name="amount" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-button type="submit" expand="full">Convert</ion-button>
+  </form>
+
+  <!-- Display the converted value -->
+  <ion-label *ngIf="convertedValue">{{ convertedValue }}</ion-label>
+</ion-content>
