@@ -1,24 +1,24 @@
 import { Component } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 
-
-
 @Component({
   selector: 'app-admin',
   templateUrl: 'admin.page.html',
-  styleUrls: ['admin.page.scss']
+  styleUrls: ['admin.page.scss'],
 })
 export class AdminPage {
-
-  baseCurrency: string = 'USD';
-  exchangeRates: any = {};
+  currency: string | undefined;
+  buyingRate: number | undefined;
+  sellingRate: number | undefined;
 
   constructor(private db: AngularFireDatabase) {}
 
-  saveExchangeRates() {
-    this.db.object('exchangeRates').set({
-      [this.baseCurrency]: this.exchangeRates
-    });
+  updateRates() {
+    const rate = {
+      buying: this.buyingRate,
+      selling: this.sellingRate
+    };
+    this.db.object(`rates/${this.currency}`).set(rate);
   }
 
 }

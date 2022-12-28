@@ -1,29 +1,25 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Admin Panel
+      Admin Page
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <form (ngSubmit)="saveExchangeRates()">
+  <form (ngSubmit)="updateRates()">
     <ion-item>
-      <ion-label>Base Currency</ion-label>
-      <ion-select [(ngModel)]="baseCurrency" name="baseCurrency">
-        <ion-select-option value="USD">USD</ion-select-option>
-        <ion-select-option value="EUR">EUR</ion-select-option>
-        <ion-select-option value="JPY">JPY</ion-select-option>
-      </ion-select>
+      <ion-label position="floating">Currency</ion-label>
+      <ion-input type="text" [(ngModel)]="currency" name="currency"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Exchange Rate (EUR)</ion-label>
-      <ion-input type="number" [(ngModel)]="exchangeRates.EUR" name="EUR"></ion-input>
+      <ion-label position="floating">Buying Rate</ion-label>
+      <ion-input type="number" [(ngModel)]="buyingRate" name="buyingRate"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Exchange Rate (JPY)</ion-label>
-      <ion-input type="number" [(ngModel)]="exchangeRates.JPY" name="JPY"></ion-input>
+      <ion-label position="floating">Selling Rate</ion-label>
+      <ion-input type="number" [(ngModel)]="sellingRate" name="sellingRate"></ion-input>
     </ion-item>
-    <ion-button type="submit" expand="full">Save</ion-button>
+    <ion-button type="submit" expand="full">Update</ion-button>
   </form>
 </ion-content>

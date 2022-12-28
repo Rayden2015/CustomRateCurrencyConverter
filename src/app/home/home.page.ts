@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AngularFireDatabase } from '@angular/fire/compat/database'
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 @Component({
   selector: 'app-home',
@@ -9,33 +8,27 @@ import { AngularFireDatabase } from '@angular/fire/compat/database'
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
+  baseAmount: number = 0;
   baseCurrency: string = 'USD';
   targetCurrency: string = 'EUR';
-  baseAmount!: number;
-  convertedAmount!: number;
   conversionRates: any;
-  conversionHistory: Observable<any[]>;
+  convertedAmount: number = 0;
+  buyingRates: any;
+  sellingRates: any;
 
-  constructor(private http: HttpClient, private db: AngularFireDatabase) {
-    this.conversionHistory = db.list('conversions').valueChanges();
-  }
+  constructor(private http: HttpClient, private db: AngularFireDatabase) {}
 
   convertCurrency() {
-    const apiUrl = `https://api.exchangeratesapi.io/latest?base=${this.baseCurrency}`;
-    this.http.get(apiUrl).subscribe((data: any) => {
-      this.conversionRates = data.rates;
+    this.db.object('rates').valueChanges().subscribe((rates: any) => {
+      this.conversionRates = rates;
       this.convertedAmount = this.baseAmount * this.conversionRates[this.targetCurrency];
+      this.buyingRates = {};
+      this.sellingRates = {};
+      for (const currency in this.conversionRates) {
+        this.buyingRates[currency] = this.conversionRates[currency].buying;
+        this.sellingRates[currency] = this.conversionRates[currency].selling;
 
-      // Save conversion to Firebase
-      this.db.list('conversions').push({
-        base: this.baseCurrency,
-        target: this.targetCurrency,
-        baseAmount: this.baseAmount,
-        convertedAmount: this.convertedAmount,
-        timestamp: Date.now()
-      });
+      }
     });
   }
-
 }
