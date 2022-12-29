@@ -9,7 +9,7 @@
 <ion-content padding>
   <form (ngSubmit)="convertCurrency()">
     <ion-item>
-      <ion-label position="floating">Base Amount</ion-label>
+      <ion-label position="floating">Amount (LCY)</ion-label>
       <ion-input type="number" [(ngModel)]="baseAmount" name="baseAmount"></ion-input>
     </ion-item>
     <!-- <ion-item>
@@ -20,14 +20,21 @@
         <ion-select-option value="JPY">JPY</ion-select-option>
       </ion-select>
     </ion-item> -->
-    <!-- <ion-item>
+    <ion-item>
+      <ion-label position="floating">Mode</ion-label>
+      <ion-select [(ngModel)]="mode" name="mode">
+        <ion-select-option value="selling">Sell</ion-select-option>
+        <ion-select-option value="buying">Buy</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
       <ion-label>Target Currency</ion-label>
       <ion-select [(ngModel)]="targetCurrency" name="targetCurrency">
         <ion-select-option value="USD">USD</ion-select-option>
         <ion-select-option value="EUR">EUR</ion-select-option>
         <ion-select-option value="JPY">JPY</ion-select-option>
       </ion-select>
-    </ion-item> -->
+    </ion-item>
     <ion-button type="submit" expand="full">Convert</ion-button>
   </form>
   <ion-card *ngIf="convertedAmount">
@@ -38,13 +45,15 @@
       {{ convertedAmount | currency: targetCurrency }}
     </ion-card-content>
   </ion-card>
+
+
   <ion-list *ngIf="buyingRates">
     <ion-list-header>
       Buying Rates
     </ion-list-header>
     <ion-item *ngFor="let rate of buyingRates | keyvalue">
       <ion-label>{{ rate.key }}</ion-label>
-      <ion-note slot="end">{{ rate.value }}</ion-note>
+      <ion-note slot="end">{{ rate.value}}</ion-note>
     </ion-item>
   </ion-list>
   <ion-list *ngIf="sellingRates">
@@ -53,7 +62,7 @@
     </ion-list-header>
     <ion-item *ngFor="let rate of sellingRates | keyvalue">
       <ion-label>{{ rate.key }}</ion-label>
-      <ion-note slot="end">{{ rate.value }}</ion-note>
+      <ion-note slot="end">{{ rate.value  }}</ion-note>
     </ion-item>
   </ion-list>
 </ion-content>
